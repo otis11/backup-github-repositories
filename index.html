@@ -10,18 +10,39 @@
 </head>
 
 <body>
-    <div id="name-container">
-        <input type="text" id="username" placeholder="Enter GitHub Username">
-        <button id="generate">Load</button>
+    <div id="loading">Load & Backup GitHub Repositories. Waiting...</div>
+    <div class="tabs" id="scope">
+        <div class="tab tab--active" id="public">Public</div>
+        <div class="tab" id="all">All (Private)</div>
     </div>
-    <div id="loading">Load all public repositories of a GitHub username to create a command which generates a backup for
-        them
+    <div id="public-container" style="display: none;">
+        <div id="name-container">
+            <input type="text" id="username" placeholder="Enter GitHub Username">
+            <button id="generate">Load</button>
+        </div>
     </div>
-    <div id="command-target">
-        <div id="sh" data-target="sh">Sh</div>
-        <div id="powershell" data-target="powershell">Powershell</div>
+    <div id="all-container" style="display: none;">
+        <div id="new-token-guide">
+            <p><b>1.</b> Create a new token on GitHub
+                <a href="https://github.com/settings/tokens/new">here</a>.
+            </p>
+            <p><b>2.</b> Under Scopes select "repo".</p>
+            <p><b>3.</b> Generate the token and copy.</p>
+            <div id="token-container">
+                <input type="text" id="token" placeholder="Paste Token">
+                <button id="generate-all">Load</button>
+            </div>
+        </div>
     </div>
-    <input id="command" readonly>
+    <div id="command-container" style="display: none;">
+        <p id="command-title"></p>
+        <div id="command-target" class="tabs">
+            <div class="tab" id="sh" data-target="sh">Sh</div>
+            <div class="tab" id="powershell" data-target="powershell">Powershell</div>
+        </div>
+        <input id="command" readonly>
+    </div>
+
 </body>
 
 </html>

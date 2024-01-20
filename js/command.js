@@ -1,12 +1,26 @@
-import { getRepos, getUser } from "./github.js"
+import { getRepos, getUser, getToken, getScope } from "./github.js"
 
 let targetShell = 'sh'
 const commandElement = document.getElementById('command')
 
 function generateCommandSh() {
     const folder = folderName()
-    const command = `mkdir ${folder} && cd ${folder}${getRepos().map(r => ' && wget ' + getRepoZipUrl(r) + ' -O ' + r.name + '.zip').join('')} && cd ..`
+    const command = `mkdir ${folder} && cd ${folder}${getRepos().map(r => ' && wget ' + addPossibleHeaderSh(r) + getRepoZipUrl(r) + ' -O ' + r.name + '.zip').join('')} && cd ..`
     return command
+}
+
+function addPossibleHeaderSh(r) {
+    if (r.private) {
+        return `--header="Authorization: Bearer ${getToken()}" `
+    }
+    return ''
+}
+
+function addPossibleHeaderPowershell(r) {
+    if (r.private) {
+        return `-Headers @{'Authorization' = 'Bearer ${getToken()}'} `
+    }
+    return ''
 }
 
 function getRepoZipUrl(r) {
@@ -15,13 +29,14 @@ function getRepoZipUrl(r) {
 
 function generateCommandPowershell() {
     const folder = folderName()
-    const command = `mkdir ${folder}; cd ${folder};${getRepos().map(r => ' Invoke-WebRequest "' + getRepoZipUrl(r) + '" -Outfile ' + r.name + '.zip;').join('')} cd ..`
+    const command = `mkdir ${folder}; cd ${folder};${getRepos().map(r => ' Invoke-WebRequest "' + addPossibleHeaderPowershell(r) + getRepoZipUrl(r) + '" -Outfile ' + r.name + '.zip;').join('')} cd ..`
     return command
 }
 
 export function generateCommand() {
     if (getRepos() === null) return
 
+    document.getElementById('command-title').innerHTML = `(command to backup "${getScope()}")`
     let command = ''
     if (targetShell === 'sh') {
         command = generateCommandSh()
@@ -32,12 +47,16 @@ export function generateCommand() {
     navigator.clipboard.writeText(command).then(
         () => {
             /* clipboard successfully set */
-            document.getElementById('loading').innerHTML = 'Command copied to clipboard!'
+            document.getElementById('loading').innerHTML = ''
+            setTimeout(() => {
+                document.getElementById('loading').innerHTML = 'Command copied to clipboard!'
+            }, 200)
         },
         () => {
             /* clipboard write failed */
         },
     );
+    document.getElementById('command-container').style.display = 'block'
 }
 
 function folderDate() {
@@ -51,10 +70,10 @@ function folderName() {
 document.getElementById('command-target').addEventListener('click', (e) => {
     targetShell = e.target.getAttribute('data-target')
     if (targetShell) {
-        document.querySelector('.target-shell-active').classList.remove('target-shell-active')
-        e.target.classList.add('target-shell-active')
+        document.querySelector('#command-target .tab--active').classList.remove('tab--active')
+        e.target.classList.add('tab--active')
         generateCommand()
     }
 })
 
-document.querySelector(`[data-target="${targetShell}"]`).classList.add('target-shell-active')
+document.querySelector(`[data-target="${targetShell}"]`).classList.add('tab--active')

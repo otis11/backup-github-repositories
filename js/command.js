@@ -18,7 +18,7 @@ function addPossibleHeaderSh(r) {
 
 function addPossibleHeaderPowershell(r) {
     if (r.private) {
-        return `-Headers @{'Authorization' = 'Bearer ${getToken()}'} `
+        return `-Headers @{"Authorization"="Bearer ${getToken()}"} `
     }
     return ''
 }
@@ -29,7 +29,7 @@ function getRepoZipUrl(r) {
 
 function generateCommandPowershell() {
     const folder = folderName()
-    const command = `mkdir ${folder}; cd ${folder};${getRepos().map(r => ' Invoke-WebRequest "' + addPossibleHeaderPowershell(r) + getRepoZipUrl(r) + '" -Outfile ' + r.name + '.zip;').join('')} cd ..`
+    const command = `mkdir ${folder}; cd ${folder};${getRepos().map(r => ' Invoke-WebRequest "' + getRepoZipUrl(r) + '" ' + addPossibleHeaderPowershell(r) + ' -Outfile ' + r.name + '.zip;').join('')} cd ..`
     return command
 }
 

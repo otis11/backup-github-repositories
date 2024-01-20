@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backup GitHub Public Repositories</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script defer src="./js/main.js" type="module"></script>
+</head>
+
+<body>
+    <div id="name-container">
+        <input type="text" id="username" placeholder="Enter GitHub Username">
+        <button id="generate">Load</button>
+    </div>
+    <div id="loading">Load all public repositories of a GitHub username to create a command which generates a backup for
+        them
+    </div>
+    <div id="command-target">
+        <div id="sh" data-target="sh">Sh</div>
+        <div id="powershell" data-target="powershell">Powershell</div>
+    </div>
+    <input id="command" readonly>
+</body>
+
+</html>

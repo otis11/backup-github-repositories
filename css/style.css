@@ -1,0 +1,86 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-family: sans-serif;
+    background-color: var(--background-color);
+}
+
+:root {
+    --placeholder-color: rgb(134, 134, 139);
+    --foreground-color: #E8E8ED;
+    --background-color: #161617;
+    --background-muted-color: #282b2e;
+}
+
+body {
+    height: 100vh;
+    color: var(--foreground-color);
+    max-width: 700px;
+    margin: auto;
+    padding: 24px;
+}
+
+.target-shell-active {
+    border-bottom: 1px solid var(--foreground-color);
+}
+
+#command-target {
+    display: flex;
+    padding: 16px 0;
+}
+
+#command-target div {
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
+#command,
+#username {
+    width: 100%;
+    outline: none;
+    border: none;
+    padding: 12px 24px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+    color: var(--foreground-color);
+    background-color: var(--background-muted-color);
+    border-radius: 6px;
+}
+
+#name-container {
+    display: flex;
+    justify-content: center;
+    padding-top: 48px;
+}
+
+#username {
+    width: 200px;
+}
+
+button {
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    padding: 12px 24px;
+    cursor: pointer;
+    background: linear-gradient(140deg, #D2A8FF 12.09%, #F778BA 42.58%, #FF7B72 84.96%);
+    font-weight: bold;
+}
+
+#generate {
+    margin-left: 12px;
+}
+
+#loading {
+    padding-top: 32px;
+    padding-bottom: 16px;
+    color: var(--placeholder-color);
+    font-style: italic;
+    font-size: 14px;
+    text-align: center;
+}
